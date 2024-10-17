@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity WebGL</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        #unityContainer {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+    <script src="Web.loader.js"></script>
+</head>
+<body>
+<canvas id="unityContainer" width="640" height="480"></canvas>
+
+<script>
+    var canvas = document.getElementById("unityContainer");
+
+    // Убедись, что это действительно canvas элемент
+    if (!(canvas instanceof HTMLCanvasElement)) {
+        console.error("Невалидный элемент для WebGL, canvas не найден.");
+    } else {
+        console.log("Canvas элемент найден!");
+
+        var config = {
+            dataUrl: "webgl.data",  // Путь к файлу .data
+            frameworkUrl: "build.framework.js",  // Путь к файлу .js
+            codeUrl: "build.wasm",  // Путь к файлу .wasm
+            streamingAssetsUrl: "StreamingAssets",  // Путь к папке с потоковыми ресурсами (если есть)
+            companyName: "MyCompany",
+            productName: "MyProduct",
+            productVersion: "1.0",
+            webglContextAttributes: {
+                preserveDrawingBuffer: true,
+                antialias: false,
+            }
+        };
+
+        createUnityInstance(canvas, config, (progress) => {
+            console.log("Загрузка: " + Math.floor(progress * 100) + "%");
+        }).then((unityInstance) => {
+            console.log("Unity WebGL успешно загружен!");
+        }).catch((message) => {
+            console.error("Ошибка загрузки Unity WebGL: " + message);
+        });
+    }
+</script>
+</body>
+</html>
